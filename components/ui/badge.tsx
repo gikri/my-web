@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils/cn'
 interface BadgeProps {
   children: React.ReactNode
   className?: string
-  variant?: 'default' | 'accent' | 'outline'
+  variant?: keyof typeof variantMap
 }
 
 const variantMap = {

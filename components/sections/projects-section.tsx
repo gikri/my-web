@@ -2,6 +2,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { ExternalLink, ArrowRight } from 'lucide-react'
+import { cn } from '@/lib/utils/cn'
 import { GlassCard } from '@/components/ui/glass-card'
 import { Badge } from '@/components/ui/badge'
 import type { Project } from '@/types'
@@ -68,11 +69,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       <GlassCard tilt tiltStrength={7} intensity="medium"
         className="group p-6 h-full flex flex-col gap-4 glass-hover cursor-pointer relative overflow-hidden">
         {/* 카드 그라디언트 배경 */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 pointer-events-none`} />
+        <div className={cn('absolute inset-0 bg-gradient-to-br opacity-40 pointer-events-none', project.gradient)} />
 
         <div className="relative flex flex-col gap-3 flex-1">
           <div className="flex items-start justify-between gap-3">
-            <h3 className="font-semibold text-slate-100 leading-tight" style={{ fontFamily: 'var(--font-syne)' }}>
+            <h3 className="font-display font-semibold text-slate-100 leading-tight">
               {project.title}
             </h3>
             {project.url && (
@@ -116,8 +117,7 @@ export function ProjectsSection() {
           transition={{ duration: 0.6 }}
         >
           <Badge variant="outline">Projects</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-100"
-            style={{ fontFamily: 'var(--font-syne)' }}>
+          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-100">
             Things I&apos;ve <span className="gradient-text">built</span>
           </h2>
           <p className="text-slate-400 font-light max-w-xl">

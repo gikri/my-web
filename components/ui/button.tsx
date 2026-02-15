@@ -1,9 +1,8 @@
 import { cn } from '@/lib/utils/cn'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'ghost' | 'outline'
-  size?: 'sm' | 'md' | 'lg'
-  asChild?: boolean
+  variant?: keyof typeof variantMap
+  size?: keyof typeof sizeMap
 }
 
 const variantMap = {

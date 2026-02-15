@@ -3,24 +3,25 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { GlassCard } from '@/components/ui/glass-card'
+import { cn } from '@/lib/utils/cn'
 
 const SKILL_GROUPS = [
   {
     category: 'Frontend',
     color: 'text-violet-400',
-    glow: 'rgba(124,58,237,0.15)',
+    shadowClass: 'shadow-[0_0_40px_rgba(124,58,237,0.15)]',
     skills: ['Next.js 14', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Zustand'],
   },
   {
     category: 'Backend',
     color: 'text-cyan-400',
-    glow: 'rgba(6,182,212,0.12)',
+    shadowClass: 'shadow-[0_0_40px_rgba(6,182,212,0.12)]',
     skills: ['FastAPI', 'Python 3.11', 'PostgreSQL', 'Redis', 'REST API', 'WebSocket'],
   },
   {
     category: 'DevOps',
     color: 'text-emerald-400',
-    glow: 'rgba(52,211,153,0.12)',
+    shadowClass: 'shadow-[0_0_40px_rgba(52,211,153,0.12)]',
     skills: ['Vercel', 'Docker', 'GitHub Actions', 'Nginx', 'AWS S3', 'Cloudflare'],
   },
 ]
@@ -33,8 +34,7 @@ export function SkillsSection() {
     <section id="skills" ref={ref} className="relative py-28 px-4">
       {/* 배경 글로우 */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[600px] h-[300px] rounded-full blur-3xl opacity-30"
-          style={{ background: 'radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%)' }} />
+        <div className="glow-indigo-soft w-[600px] h-[300px] rounded-full blur-3xl opacity-30" />
       </div>
 
       <div className="max-w-5xl mx-auto relative">
@@ -45,8 +45,7 @@ export function SkillsSection() {
           transition={{ duration: 0.6 }}
         >
           <Badge variant="outline">Skills</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-100"
-            style={{ fontFamily: 'var(--font-syne)' }}>
+          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-100">
             My <span className="gradient-text">toolkit</span>
           </h2>
           <p className="text-slate-400 font-light max-w-lg">
@@ -62,10 +61,8 @@ export function SkillsSection() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: gi * 0.12 + 0.2 }}
             >
-              <GlassCard intensity="medium" className="p-6 flex flex-col gap-5 h-full"
-                style={{ boxShadow: `0 0 40px ${group.glow}` } as React.CSSProperties}>
-                <span className={`text-xs font-semibold uppercase tracking-widest ${group.color}`}
-                  style={{ fontFamily: 'var(--font-syne)' }}>
+              <GlassCard intensity="medium" className={cn('p-6 flex flex-col gap-5 h-full', group.shadowClass)}>
+                <span className={cn('font-display text-xs font-semibold uppercase tracking-widest', group.color)}>
                   {group.category}
                 </span>
                 <div className="flex flex-wrap gap-2">

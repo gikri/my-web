@@ -26,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className="scroll-smooth">
-      <body className={`${dmSans.variable} ${syne.variable} bg-grid`} style={{ fontFamily: 'var(--font-dm-sans), system-ui, sans-serif' }}>
+      <body className={`${dmSans.variable} ${syne.variable} font-sans bg-grid`}>
         {children}
       </body>
     </html>

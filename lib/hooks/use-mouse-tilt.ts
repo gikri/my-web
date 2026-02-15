@@ -1,8 +1,16 @@
 'use client'
 import { useRef } from 'react'
-import { useMotionValue, useSpring } from 'framer-motion'
+import { useMotionValue, useSpring, type MotionValue } from 'framer-motion'
 
-export function useMouseTilt(strength = 12) {
+interface MouseTiltResult {
+  ref: React.RefObject<HTMLDivElement | null>
+  rotateX: MotionValue<number>
+  rotateY: MotionValue<number>
+  handleMouseMove: (e: React.MouseEvent<HTMLDivElement>) => void
+  handleMouseLeave: () => void
+}
+
+export function useMouseTilt(strength = 12): MouseTiltResult {
   const ref = useRef<HTMLDivElement>(null)
 
   const rawX = useMotionValue(0)

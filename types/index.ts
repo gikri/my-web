@@ -1,13 +1,13 @@
 export interface Project {
-  id: string
-  title: string
-  description: string
-  tags: string[]
-  url?: string
-  gradient: string
+  readonly id: string
+  readonly title: string
+  readonly description: string
+  readonly tags: readonly string[]
+  readonly url?: string
+  readonly gradient: string
 }
 
 export interface Skill {
-  name: string
-  category: 'frontend' | 'backend' | 'devops' | 'design'
+  readonly name: string
+  readonly category: 'frontend' | 'backend' | 'devops' | 'design'
 }

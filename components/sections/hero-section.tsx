@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Github, Twitter } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils/cn'
 
 const FLOAT_CARDS = [
   { label: 'Next.js 14', sub: 'App Router', delay: 0,    pos: 'top-[18%] right-[8%]',   rot: 'rotate-3' },
@@ -13,16 +14,14 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       {/* 배경 글로우 */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, rgba(99,102,241,0.05) 50%, transparent 75%)' }} />
-      <div className="absolute top-[30%] right-[20%] w-64 h-64 rounded-full pointer-events-none blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)' }} />
+      <div className="glow-purple-hero absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full pointer-events-none" />
+      <div className="glow-cyan-accent absolute top-[30%] right-[20%] w-64 h-64 rounded-full pointer-events-none blur-3xl" />
 
       {/* 플로팅 기술 카드 */}
       {FLOAT_CARDS.map((card) => (
         <motion.div
           key={card.label}
-          className={`absolute hidden lg:flex flex-col gap-0.5 px-4 py-3 rounded-xl border border-white/8 bg-white/[0.04] backdrop-blur-xl pointer-events-none ${card.pos} ${card.rot}`}
+          className={cn('absolute hidden lg:flex flex-col gap-0.5 px-4 py-3 rounded-xl border border-white/8 bg-white/[0.04] backdrop-blur-xl pointer-events-none', card.pos, card.rot)}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: [0, -10, 0] }}
           transition={{ opacity: { delay: card.delay + 1, duration: 0.6 }, y: { delay: card.delay + 1, duration: 4 + card.delay, repeat: Infinity, ease: 'easeInOut' } }}
@@ -42,8 +41,7 @@ export function HeroSection() {
         </motion.div>
 
         <motion.h1
-          className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight leading-[1.05]"
-          style={{ fontFamily: 'var(--font-syne)' }}
+          className="font-display text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight leading-[1.05]"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}

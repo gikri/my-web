@@ -25,8 +25,7 @@ export function AboutSection() {
           transition={{ duration: 0.7 }}
         >
           <Badge variant="outline">About me</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-100 leading-[1.1]"
-            style={{ fontFamily: 'var(--font-syne)' }}>
+          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-100 leading-[1.1]">
             Building the web<br />
             <span className="gradient-text">one layer at a time</span>
           </h2>
@@ -49,14 +48,12 @@ export function AboutSection() {
           transition={{ duration: 0.7, delay: 0.15 }}
         >
           {/* 프로필 카드 */}
-          <GlassCard intensity="medium" tilt tiltStrength={8}
-            className="p-6 flex items-center gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 flex-shrink-0 flex items-center justify-center text-2xl font-bold text-white"
-              style={{ fontFamily: 'var(--font-syne)' }}>
+          <GlassCard intensity="medium" tilt tiltStrength={8} className="p-6 flex items-center gap-5">
+            <div className="font-display w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 flex-shrink-0 flex items-center justify-center text-2xl font-bold text-white">
               G
             </div>
             <div>
-              <p className="font-semibold text-slate-100" style={{ fontFamily: 'var(--font-syne)' }}>gikri</p>
+              <p className="font-display font-semibold text-slate-100">gikri</p>
               <p className="text-sm text-slate-500">Full-stack Developer</p>
               <p className="text-xs text-slate-600 mt-1">Seoul, Korea</p>
             </div>
@@ -72,7 +69,7 @@ export function AboutSection() {
                 transition={{ delay: 0.3 + i * 0.1 }}
               >
                 <GlassCard intensity="low" className="p-4 text-center">
-                  <p className="text-2xl font-bold gradient-text" style={{ fontFamily: 'var(--font-syne)' }}>
+                  <p className="font-display text-2xl font-bold gradient-text">
                     {stat.value}
                   </p>
                   <p className="text-[11px] text-slate-500 mt-1 leading-tight">{stat.label}</p>
