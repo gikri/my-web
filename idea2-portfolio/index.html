@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea 2: Digital Universe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ThreeJS Canvas -->
+  <canvas class="webgl"></canvas>
+
+  <!-- Navigation -->
+  <nav class="top-nav">
+    <a href="../index.html" class="back-btn">← Back to Concepts</a>
+    <div class="logo">O R B I T</div>
+  </nav>
+
+  <!-- Content Overlay -->
+  <main>
+    <section class="hero">
+      <h1>Cosmic Canvas</h1>
+      <p>Exploring the intersection of art and code across galaxies of creativity.</p>
+      <div class="instructions">Scroll to explore. Hover to inspect.</div>
+    </section>
+
+    <!-- Overlay UI for Projects (hidden by default, shown via GSAP on hover) -->
+    <div id="project-info" class="project-info">
+      <h2 id="project-title">Project Name</h2>
+      <p id="project-desc">Project description goes here.</p>
+      <a href="#" class="view-btn">View Case Study</a>
+    </div>
+  </main>
+
+  <div class="cursor-light"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- ThreeJS -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
