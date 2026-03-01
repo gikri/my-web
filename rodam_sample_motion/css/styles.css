@@ -1,0 +1,322 @@
+/* css/styles.css */
+
+/* =========================================
+   1. Theme Variables & Configuration
+   ========================================= */
+:root {
+  /* Color Palette */
+  --color-primary: #ff8a3d;  /* 활력, 기운, 치유 (Orange) */
+  --color-bg-dark: #1a1a1a;  /* 먹색 배경 (Charcoal) */
+  --color-bg-surface: #2a2a2a; /* 서브 배경 */
+  --color-text-light: #fcf9f2; /* 미색 텍스트 (Ivory) */
+  --color-accent: #3e5c4d;   /* 진녹색 포인트 (Pine) */
+
+  /* Typography */
+  --font-serif: 'Noto Serif KR', serif;
+  --font-sans: 'Pretendard', sans-serif;
+
+  /* Spacing & Layout */
+  --section-padding: 120px 0;
+  --container-width: 1400px;
+}
+
+/* =========================================
+   2. Global Styles
+   ========================================= */
+body {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6, .serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* =========================================
+   3. WebGL Background (Three.js)
+   ========================================= */
+#webgl-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; 
+  pointer-events: none; /* Let clicks pass through to HTML */
+}
+
+/* =========================================
+   4. Header & Navigation
+   ========================================= */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  mix-blend-mode: difference;
+}
+
+.logo {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.nav-btn {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* =========================================
+   5. Hero Section
+   ========================================= */
+.hero {
+  align-items: center;
+  text-align: center;
+  /* background: url('../assets/hero-bg.jpg') no-repeat center/cover; */ /* Placeholder for 통 이미지 */
+}
+
+.hero-title {
+  font-size: clamp(3rem, 6vw, 6rem);
+  line-height: 1.2;
+  margin-bottom: 2rem;
+  opacity: 0; /* JS will animate this */
+  transform: translateY(30px);
+}
+
+.hero-desc {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 300;
+  opacity: 0;
+  color: rgba(252, 249, 242, 0.8);
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  opacity: 0;
+}
+
+.scroll-indicator span {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-primary);
+}
+
+.scroll-indicator .line {
+  width: 1px;
+  height: 60px;
+  background-color: var(--color-primary);
+  /* Animation handled by GSAP or CSS */
+}
+
+/* =========================================
+   6. Custom Cursor
+   ========================================= */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background-color 0.3s;
+  mix-blend-mode: difference;
+}
+@media (max-width: 768px) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+/* Add more section styles gradually... */
+
+/* =========================================
+   7. Core Title (Philosophy) Section
+   ========================================= */
+.core-title {
+  background-color: var(--color-bg-surface);
+  text-align: center;
+}
+
+.core-title .split-text {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.4;
+  /* GSAP will animate the chars/words */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.core-title .split-text .char {
+  transform: translateY(110%);
+  opacity: 0;
+  display: inline-block;
+}
+
+/* =========================================
+   8. History (Horizontal) Section
+   ========================================= */
+.history {
+  height: 100vh; /* Controlled by Pinning */
+  background-color: var(--color-bg-dark);
+  overflow: hidden;
+  align-items: flex-start;
+  padding-top: 30vh;
+}
+
+.history-wrapper {
+  display: flex;
+  width: max-content; /* Critical for horizontal scroll */
+  padding-left: 10vw;
+  padding-right: 50vw; /* Padding to allow scrolling past last item */
+  gap: 15vw;
+}
+
+.history-item {
+  width: 400px;
+  border-top: 2px solid var(--color-accent);
+  padding-top: 30px;
+  opacity: 0.5; /* Opacity changes on scroll */
+  transition: opacity 0.3s;
+}
+
+.history-item h3 {
+  font-size: 3rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.history-item p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+/* Active state for history item via JS */
+.history-item.is-active {
+  opacity: 1;
+}
+
+/* =========================================
+   9. Gallery Section
+   ========================================= */
+.gallery {
+  background-color: var(--color-bg-surface);
+  padding: var(--section-padding);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  width: 100%;
+}
+
+.gallery-item {
+  position: relative;
+  aspect-ratio: 4/5;
+  background-color: #333;
+  overflow: hidden;
+  border-radius: 4px;
+  cursor: pointer;
+  /* Next: Real images or WebGL textures */
+}
+
+/* =========================================
+   10. Video Section
+   ========================================= */
+.video {
+  /* background-color: var(--color-bg-dark); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-container {
+  width: 80%;
+  max-width: 1200px;
+  aspect-ratio: 16/9;
+  background-color: #111;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.video-thumb {
+  width: 100%;
+  height: 100%;
+  background-image: url('https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'); /* Sample image: Traditional calm */
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.video-container:hover .video-thumb {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   11. Footer / Contact
+   ========================================= */
+.footer {
+  background-color: var(--color-bg-dark);
+  text-align: center;
+  min-height: 50vh;
+}
+
+.footer h2 {
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  margin-bottom: 40px;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 20px 50px;
+  background-color: var(--color-primary);
+  color: #1a1a1a;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.cta-btn:hover {
+  background-color: #ff9d5c;
+  transform: translateY(-5px);
+}
