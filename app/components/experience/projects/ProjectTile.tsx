@@ -11,13 +11,14 @@ import { Project } from "@types";
 interface ProjectTileProps {
   project: Project;
   index: number;
+  middleIndex: number;
   position: [number, number, number];
   rotation: [number, number, number];
   activeId: number | null;
   onClick: () => void;
 }
 
-const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: ProjectTileProps) => {
+const ProjectTile = ({ project, index, middleIndex, position, rotation, activeId, onClick }: ProjectTileProps) => {
   const projectRef = useRef<THREE.Group>(null);
   const hoverAnimRef = useRef<gsap.core.Timeline | null>(null);
   const [hovered, setHovered] = useState(false);
@@ -43,16 +44,21 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
 
     hoverAnimRef.current = gsap.timeline();
     hoverAnimRef.current
-      .to(projectRef.current.position, { z: hovered ? 1 : 0, duration: 0.2 }, 0)
-      .to(projectRef.current.position, { y: hovered ? 0.4 : 0 }, 0)
+      .to(projectRef.current.position, { 
+        y: hovered ? 3 : 0,  // 이곳은 실제 앞뒤(World Z)를 의미함
+        z: hovered ? 0.8 : 0, // 이곳은 실제 위아래(World Y)를 의미함
+        duration: 0.4,
+        ease: "power2.out"
+      }, 0)
       .to(projectRef.current.scale, {
         x: hovered ? 1.3 : 1,
         y: hovered ? 1.3 : 1,
         z: hovered ? 1.3 : 1,
+        duration: 0.4,
+        ease: "power2.out"
       }, 0)
       .to(title.position, { y: hovered ? 0.7 : -0.8 }, 0)
       .to(textBox.position, { y: hovered ? 0.7 : 0 }, 0)
-      // .to(textBox.scale, { y: hovered ? 1 : 0, x: hovered ? 1 : 0 }, 0)
       .to(textBox, { fillOpacity: hovered ? 1 : 0, duration: 0.4 }, 0)
       .to(dateGroup.position, { y: hovered ? 2.6 : 1.4 }, 0)
       .to(mesh.scale, { y: hovered ? 2 : 1 }, 0)
@@ -74,11 +80,45 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
 
   useEffect(() => {
     if (projectRef.current) {
-      gsap.to(projectRef.current.position, {
-        y: isProjectSectionActive ? 0 : -10,
-        duration: 1,
-        delay: isProjectSectionActive ? index * 0.1 : 0,
-      });
+      if (isProjectSectionActive) {
+        // 중앙에서부터의 거리를 계산하여 딜레이 설정
+        const distanceToMiddle = Math.abs(index - middleIndex);
+        
+        // 초기 상태 설정
+        gsap.set(projectRef.current.position, { z: -10 }); // 아래(Z)에서 등장
+        gsap.set(projectRef.current.scale, { x: 0, y: 0, z: 0 });
+
+        // 등장 애니메이션
+        gsap.to(projectRef.current.position, {
+          z: 0,
+          duration: 1.2,
+          delay: distanceToMiddle * 0.15,
+          ease: "power3.out",
+        });
+        
+        gsap.to(projectRef.current.scale, {
+          x: 1,
+          y: 1,
+          z: 1,
+          duration: 1,
+          delay: distanceToMiddle * 0.15,
+          ease: "back.out(1.7)",
+        });
+      } else {
+        // 나갈 때의 애니메이션
+        gsap.to(projectRef.current.position, {
+          z: -10, // 아래(Z)로 퇴장
+          duration: 0.5,
+          ease: "power2.in",
+        });
+        gsap.to(projectRef.current.scale, {
+          x: 0,
+          y: 0,
+          z: 0,
+          duration: 0.5,
+          ease: "power2.in",
+        });
+      }
     }
   }, [isProjectSectionActive]);
 

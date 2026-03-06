@@ -5,7 +5,12 @@ import ProjectTile from "./ProjectTile";
 import { PROJECTS } from "@constants";
 import { usePortalStore } from "@stores";
 
-const ProjectsCarousel = () => {
+interface CarouselProps {
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+}
+
+const ProjectsCarousel = ({ position = [0, 0, 0], rotation = [0, 0, 0] }: CarouselProps) => {
   const [activeId, setActiveId] = useState<number | null>(null);
   const isActive = usePortalStore((state) => state.activePortalId === "projects");
 
@@ -22,11 +27,12 @@ const ProjectsCarousel = () => {
     const fov = Math.PI;
     const distance = 13;
     const count = PROJECTS.length;
+    const middleIndex = Math.floor(count / 2);
 
     return PROJECTS.map((project, i) => {
-      const angle = (fov / count) * i;
-      const z = -distance * Math.sin(angle);
-      const x = -distance * Math.cos(angle);
+      const angle = (fov / (count - 1 || 1)) * i;
+      const y = -distance * Math.sin(angle); // 기존 z가 여기서는 y(깊이)
+      const x = -distance * Math.cos(angle); // x는 그대로
       const rotY = Math.PI / 2 - angle;
 
       return (
@@ -34,7 +40,8 @@ const ProjectsCarousel = () => {
           key={i}
           project={project}
           index={i}
-          position={[x, 1, z]}
+          middleIndex={middleIndex}
+          position={[x, y, 0]} // Z축(높이)은 0으로 고정
           rotation={[0, rotY, 0]}
           activeId={activeId}
           onClick={() => onClick(i)}
@@ -44,7 +51,7 @@ const ProjectsCarousel = () => {
   }, [activeId, isActive]);
 
   return (
-    <group rotation={[0, -Math.PI / 12, 0]}>
+    <group position={position} rotation={rotation}>
       {tiles}
     </group>
   );

@@ -70,7 +70,7 @@ const Experience = () => {
           </GridTile>
           <GridTile title='SIDE PROJECTS'
             id="projects"
-            color='#bdd1e3'
+            color='#3b3b3bff'
             textAlign='right'
             position={new THREE.Vector3(isMobile ? 1 : 2, 0, 0)}>
             <Projects/>
