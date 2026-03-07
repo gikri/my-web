@@ -26,7 +26,7 @@ experienceGroup.updateMatrixWorld(true);
 const cameraParams = { z: 10.8, y: -33, x: 2, fovZ: [5, 15] };
 
 // Function to test mapping local (x, y) to World pos
-function testLocalPos(name, localX, localY, rotY) {
+function testLocalPos(name: string, localX: number, localY: number, rotY: number) {
   const tile = new THREE.Group();
   tile.rotation.y = rotY;
   tile.position.set(localX, localY, 0);
