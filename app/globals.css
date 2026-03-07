@@ -17,21 +17,21 @@
 * {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-     -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none;
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
 }
 
 body {
   overscroll-behavior: none;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-cafe24), Arial, Helvetica, sans-serif;
 }
 
 :root {
-  --scrollbarColor: #FFF;
+  --scrollbarColor: #fff;
   --scrollbarBackground: rgba(0, 0, 0, 0);
 }
 
@@ -67,10 +67,11 @@ body {
   opacity: 1;
 }
 
-.close:before, .close:after {
+.close:before,
+.close:after {
   position: absolute;
   left: 2rem;
-  content: ' ';
+  content: " ";
   height: 48px;
   width: 2px;
   background-color: #0a0a0a;
@@ -82,4 +83,9 @@ body {
 
 .close:after {
   transform: rotate(-45deg);
+}
+
+.close.white:before,
+.close.white:after {
+  background-color: #ffffff;
 }

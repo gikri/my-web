@@ -13,6 +13,11 @@ const vercettiFont = localFont({
   variable: "--font-vercetti",
 });
 
+const cafe24Font = localFont({
+  src: "../public/Cafe24Oneprettynight-v2.0.woff2",
+  variable: "--font-cafe24",
+});
+
 export const metadata: Metadata = {
   title: "Gikri Web",
   description: "frontend asome website .",
@@ -36,21 +41,24 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Mohit Virli - Frontend Engineer",
-    description: "Frontend engineer by profession, creative at heart.",
-    url: "https://mohitvirli.github.io",
-    siteName: "Mohit Virli's Portfolio",
-    locale: "en_US",
+    title: "Gikri Web - Frontend Engineer",
+    description: "웹의 생동감을 코드로 빚어내는 프론트엔드 개발자입니다.",
+    url: "https://gikri.show", // 나중에 실제 도메인으로 변경
+    siteName: "Gikri's Portfolio",
+    locale: "ko_KR",
     type: "website",
+    images: [
+      {
+        url: 'https://gikri.show/og-image.png', // 권장 사이즈: 1200x630px
+        width: 1200,
+        height: 630,
+        alt: "Gikri's Portfolio Preview Image",
+      },
+    ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Mohit Virli - Frontend Engineer",
-    description: "Frontend engineer by profession, creative at heart.",
-  },
-  verification: {
-    google: "GsRYY-ivL0F_VKkfs5KAeToliqz0gCrRAJKKmFkAxBA",
-  },
+  /* verification: {
+    google: "구글 검색엔진 고유 인증 코드",
+  }, */
 };
 
 export const viewport: Viewport = {
@@ -66,13 +74,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="overscroll-y-none">
+    <html lang="ko" className="overscroll-y-none">
       <body
-        className={`${soriaFont.variable} ${vercettiFont.variable} font-sans antialiased`}
+        className={`${soriaFont.variable} ${vercettiFont.variable} ${cafe24Font.variable} font-sans antialiased`}
       >
         {children}
       </body>
-      <GoogleAnalytics gaId={'G-7WD4HM3XRE'}/>
+      {/* <GoogleAnalytics gaId={'본인의 Google Analytics 추적 ID'}/> */}
     </html>
   );
 }

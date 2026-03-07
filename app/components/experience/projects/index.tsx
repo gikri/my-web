@@ -24,7 +24,8 @@ const Projects = () => {
     data.el.style.overflow = isActive ? 'hidden' : 'auto';
     if (isActive) {
       if (isMobile) {
-        gsap.to(camera.position, { z: 0, y: 0, x: 1, duration: 1 });
+        // 모바일 화면 비율에 맞춰 더 멀리 떨어져서 2x2 그리드가 다 보이도록 설정합니다.
+        gsap.to(camera.position, { z: 9, y: -25, x: 1, duration: 1 });
       } else {
         gsap.to(camera.position, { z: 11.76, y: -33, x: 2, duration: 1 });
       }
@@ -49,7 +50,6 @@ const Projects = () => {
       
       <SpaceBoi rotation={new THREE.Euler(0, 0, 0)} scale={new THREE.Vector3(1, 1, 1)} position={new THREE.Vector3(0, -1, 0)}/>
       <ProjectsCarousel position={[0, 8.5, 0]} />
-      { isActive && isMobile && <TouchPanControls /> }
     </group>
   );
 };

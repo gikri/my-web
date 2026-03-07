@@ -24,16 +24,29 @@ const ProjectsCarousel = ({ position = [0, 0, 0], rotation = [0, 0, 0] }: Carous
   };
 
   const tiles = useMemo(() => {
-    const fov = Math.PI;
-    const distance = 13;
-    const count = PROJECTS.length;
-    const middleIndex = Math.floor(count / 2);
+    // PC 2x2 Grid Layout
+    const PC_GRID_LAYOUT = [
+      { position: [-4.5, -8.5, 2] as [number, number, number], rotation: [0, Math.PI / 12, 0] as [number, number, number] },
+      { position: [-4.5, -5, 2] as [number, number, number],  rotation: [0, Math.PI / 12, 0] as [number, number, number] },
+      { position: [4.5, -8.5, 2] as [number, number, number],  rotation: [0, -Math.PI / 12, 0] as [number, number, number] },
+      { position: [4.5, -5, 2] as [number, number, number],   rotation: [0, -Math.PI / 12, 0] as [number, number, number] },
+    ];
+
+    // Mobile 2x2 Grid Layout (좀 더 오밀조밀하게 모으고, 각도도 조절 가능)
+    const MOBILE_GRID_LAYOUT = [
+      { position: [-2.5, -3, 2] as [number, number, number], rotation: [0, Math.PI / 16, 0] as [number, number, number] },
+      { position: [-2.5, .5, 2] as [number, number, number],  rotation: [0, Math.PI / 16, 0] as [number, number, number] },
+      { position: [2.5, -3, 2] as [number, number, number],  rotation: [0, -Math.PI / 16, 0] as [number, number, number] },
+      { position: [2.5, .5, 2] as [number, number, number],   rotation: [0, -Math.PI / 16, 0] as [number, number, number] },
+    ];
+
+    const GRID_LAYOUT = isMobile ? MOBILE_GRID_LAYOUT : PC_GRID_LAYOUT;
+
+    const middleIndex = 1; // Arbitrary center for animation delay calculation
 
     return PROJECTS.map((project, i) => {
-      const angle = (fov / (count - 1 || 1)) * i;
-      const y = -distance * Math.sin(angle); // 기존 z가 여기서는 y(깊이)
-      const x = -distance * Math.cos(angle); // x는 그대로
-      const rotY = Math.PI / 2 - angle;
+      // Fallback just in case there are fewer or more than 4 items
+      const layout = GRID_LAYOUT[i] || { position: [0, 0, 0] as [number, number, number], rotation: [0, 0, 0] as [number, number, number] };
 
       return (
         <ProjectTile
@@ -41,10 +54,11 @@ const ProjectsCarousel = ({ position = [0, 0, 0], rotation = [0, 0, 0] }: Carous
           project={project}
           index={i}
           middleIndex={middleIndex}
-          position={[x, y, 0]} // Z축(높이)은 0으로 고정
-          rotation={[0, rotY, 0]}
+          position={layout.position}
+          rotation={layout.rotation}
           activeId={activeId}
           onClick={() => onClick(i)}
+          expandDirection={i === 1 || i === 3 ? "down" : "up"}
         />
       );
     });

@@ -2,7 +2,7 @@ import { ScrollControls } from "@react-three/drei";
 import { usePortalStore, useScrollStore } from "@stores";
 import { useEffect } from "react";
 import * as THREE from "three";
-import { Memory } from "../../models/Memory";
+import { AnimeClassRoom } from "../../models/AnimeClassRoom";
 import Timeline from "./Timeline";
 
 const Work = () => {
@@ -50,7 +50,7 @@ const Work = () => {
         <shadowMaterial opacity={0.1} />
       </mesh>
       <ScrollControls style={{ zIndex: -1}} pages={2} maxSpeed={0.4}>
-        <Memory scale={new THREE.Vector3(5, 5, 5)} position={new THREE.Vector3(0, -6, 1)}/>
+        <AnimeClassRoom scale={new THREE.Vector3(2, 2, 2)} position={new THREE.Vector3(-0, -5, -16)}/>
         <Timeline progress={isActive ? scrollProgress : 0} />
       </ScrollControls>
     </group>

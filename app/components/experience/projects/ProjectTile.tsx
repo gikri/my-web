@@ -16,9 +16,10 @@ interface ProjectTileProps {
   rotation: [number, number, number];
   activeId: number | null;
   onClick: () => void;
+  expandDirection?: 'up' | 'down';
 }
 
-const ProjectTile = ({ project, index, middleIndex, position, rotation, activeId, onClick }: ProjectTileProps) => {
+const ProjectTile = ({ project, index, middleIndex, position, rotation, activeId, onClick, expandDirection = 'up' }: ProjectTileProps) => {
   const projectRef = useRef<THREE.Group>(null);
   const hoverAnimRef = useRef<gsap.core.Timeline | null>(null);
   const [hovered, setHovered] = useState(false);
@@ -36,39 +37,65 @@ const ProjectTile = ({ project, index, middleIndex, position, rotation, activeId
     anchorY: "top",
   }), []);
 
+  const koreanFontProps: Partial<TextProps> = useMemo(() => ({
+    font: "./Cafe24Oneprettynight-v2.0.woff",
+    color: "black",
+    anchorX: "left",
+    anchorY: "top",
+  }), []);
+
   useEffect(() => {
     if (!projectRef.current) return;
     hoverAnimRef.current?.kill();
 
     const [mesh, title, dateGroup, textBox, button] = projectRef.current.children;
 
+    const isUp = expandDirection === 'up';
+
+    // 모바일에서 활성화 시, 자신의 초기 위치(position prop)를 상쇄(-position)하여
+    // parent group 기준 중앙(0, 0)으로 이동하게 만듭니다.
+    const targetX = hovered && isMobile ? -position[0] : 0;
+    // Y축 센터는 조금 위쪽(-position[1]보다 살짝 더 올리거나 내릴 수 있음, 일단 정중앙으로 상쇄)
+    // 아래 타일이 너무 위로 올라간다고 하셔서 상쇄값 그대로(-position[1]) 사용 혹은 약간만 보정
+    const targetY = hovered && isMobile ? -position[1] - 1.5 : (hovered ? 1.0 : 0);
+    // 모바일에서 활성화 시 정면을 바라보게(기존 기울기 풂)
+    const targetRotY = hovered && isMobile ? -rotation[1] : 0;
+    // 80vw 차지할 정도로 매우 크게 스케일업 (대략 2.6 ~ 2.8배 크기)
+    const targetScale = hovered ? (isMobile ? 1.8 : 1.3) : 1;
+
     hoverAnimRef.current = gsap.timeline();
     hoverAnimRef.current
       .to(projectRef.current.position, { 
-        y: hovered ? 3 : 0,  // 이곳은 실제 앞뒤(World Z)를 의미함
-        z: hovered ? 0.8 : 0, // 이곳은 실제 위아래(World Y)를 의미함
+        x: targetX,
+        y: targetY,
+        z: hovered ? (isMobile ? 3.5 : 0.8) : 0, // Z축으로 최대한 튀어나오게 (화면 꽉 차게)
+        duration: 0.4,
+        ease: "power2.out"
+      }, 0)
+      .to(projectRef.current.rotation, {
+        y: targetRotY,
         duration: 0.4,
         ease: "power2.out"
       }, 0)
       .to(projectRef.current.scale, {
-        x: hovered ? 1.3 : 1,
-        y: hovered ? 1.3 : 1,
-        z: hovered ? 1.3 : 1,
+        x: targetScale,
+        y: targetScale,
+        z: targetScale,
         duration: 0.4,
         ease: "power2.out"
       }, 0)
-      .to(title.position, { y: hovered ? 0.7 : -0.8 }, 0)
-      .to(textBox.position, { y: hovered ? 0.7 : 0 }, 0)
+      .to(title.position, { y: hovered ? (isUp ? 0.7 : -1.3) : -0.8 }, 0)
+      .to(textBox.position, { y: hovered ? (isUp ? 0.7 : -1.3) : 0 }, 0)
       .to(textBox, { fillOpacity: hovered ? 1 : 0, duration: 0.4 }, 0)
-      .to(dateGroup.position, { y: hovered ? 2.6 : 1.4 }, 0)
+      .to(dateGroup.position, { y: hovered ? (isUp ? 2.6 : 1.4) : 1.4 }, 0)
       .to(mesh.scale, { y: hovered ? 2 : 1 }, 0)
-      .to((mesh as THREE.Mesh).material, { opacity: hovered ? 0.95 : 0.3 }, 0)
-      .to(mesh.position, { y: hovered ? 1 : 0 }, 0);
+      .to((mesh as THREE.Mesh).material, { opacity: hovered ? 1 : 0.3 }, 0)
+      .to(mesh.position, { y: hovered ? (isUp ? 1 : -1) : 0 }, 0);
 
     if (project.url) {
       hoverAnimRef.current
         .to(button.scale, { y: hovered ? 1 : 0, x: hovered ? 1 : 0 }, 0)
-        .to(button.position, { z: hovered ? 0.3 : -1 }, 0);
+        .to(button.position, { z: hovered ? 0.3 : -1, y: hovered ? (isUp ? -0.6 : -2.6) : -0.6 }, 0);
     }
   }, [hovered]);
 
@@ -136,8 +163,14 @@ const ProjectTile = ({ project, index, middleIndex, position, rotation, activeId
       position={position}
       rotation={rotation}
       onClick={onClick}
-      onPointerOver={() => !isMobile && isProjectSectionActive && setHovered(true)}
-      onPointerOut={() => !isMobile && isProjectSectionActive && setHovered(false)}>
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        if (!isMobile && isProjectSectionActive) setHovered(true);
+      }}
+      onPointerOut={(e) => {
+        e.stopPropagation();
+        if (!isMobile && isProjectSectionActive) setHovered(false);
+      }}>
       <group ref={projectRef}>
         <mesh>
           <planeGeometry args={[4.2, 2, 1]} />
@@ -168,7 +201,7 @@ const ProjectTile = ({ project, index, middleIndex, position, rotation, activeId
           </Text>
         </group>
         <Text
-          {...subtitleProps}
+          {...koreanFontProps}
           maxWidth={3.8}
           position={[-1.9, 2.3, 0.1]}
           // scale={[0, 0, 1]}

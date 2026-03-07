@@ -55,8 +55,10 @@ const FooterLinkItem = ({ link }: { link: FooterLink }) => {
     const hoverDiv = document.getElementById(`footer-link-${link.name}`);
 
     if (hovered) {
+      document.body.style.cursor = 'pointer';
       gsap.fromTo(hoverDiv, { opacity: 0 }, { opacity: 0.5, delay: 0.2 });
     } else {
+      document.body.style.cursor = 'auto';
       gsap.to(hoverDiv, { opacity: 0 });
     }
 
@@ -66,12 +68,11 @@ const FooterLinkItem = ({ link }: { link: FooterLink }) => {
     });
 
     return () => {
+      document.body.style.cursor = 'auto';
       gsap.killTweensOf(hoverDiv);
       gsap.killTweensOf(textRef.current);
     }
   }, [hovered]);
-
-  useCursor(hovered);
 
   if (isMobile) {
     return <Svg onClick={onClick} scale={0.0015} position={[0.1, 0.25, 0]} src={link.icon} />;
@@ -95,19 +96,23 @@ const Footer = () => {
     }
   });
 
+  const spacing = isMobile ? 1.1 : 2;
   const getLinks = () => {
     return FOOTER_LINKS.map((link, i) => {
       return (
-        <group key={i} position={[i * (isMobile ? 1.1 : 2), 0, 0]}>
+        <group key={i} position={[i * spacing, 0, 0]}>
           <FooterLinkItem link={link}/>
         </group>
       );
     });
   };
 
+  const totalWidth = (FOOTER_LINKS.length - 1) * spacing;
+  const offsetX = -totalWidth / 2;
+
   return (
     <group position={[0, -44, 18]} rotation={[-Math.PI / 2, 0, 0]} ref={groupRef}>
-      <group position={[isMobile ? -2.5 : -4, 0, 0]}>
+      <group position={[offsetX, 0, 0]}>
         { getLinks() }
       </group>
     </group>

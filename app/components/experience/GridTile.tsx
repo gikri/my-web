@@ -69,7 +69,8 @@ const GridTile = (props: GridTileProps) => {
     document.body.style.cursor = 'auto';
     const div = document.createElement('div');
 
-    div.className = 'fixed close';
+    const isWorkPortal = id === 'work';
+    div.className = `fixed close ${isWorkPortal ? 'white' : ''}`;
     div.style.transform = 'rotateX(90deg)';
     div.onclick = () => exitPortal(true);
 
