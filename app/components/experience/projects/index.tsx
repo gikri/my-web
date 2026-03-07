@@ -7,7 +7,7 @@ import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
 import ProjectsCarousel from "./ProjectsCarousel";
-import { TouchPanControls } from "./TouchPanControls";
+
 
 const Projects = () => {
   const { camera } = useThree();

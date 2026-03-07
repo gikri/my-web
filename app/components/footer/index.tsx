@@ -1,4 +1,4 @@
-import { Svg, Text, useCursor, useScroll } from "@react-three/drei";
+import { Svg, Text, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
@@ -12,7 +12,13 @@ const FooterLinkItem = ({ link }: { link: FooterLink }) => {
   const [hovered, setHovered] = useState(false);
   const onPointerOver = () => setHovered(true);
   const onPointerOut = () => setHovered(false);
-  const onClick = () => window.open(link.url, '_blank');
+  const onClick = () => {
+    if (link.url.startsWith('tel:') || link.url.startsWith('mailto:')) {
+      window.location.href = link.url;
+    } else {
+      window.open(link.url, '_blank');
+    }
+  };
   const onPointerMove = (e: MouseEvent) => {
     if (isMobile) return;
     const hoverDiv = document.getElementById(`footer-link-${link.name}`);
@@ -75,7 +81,17 @@ const FooterLinkItem = ({ link }: { link: FooterLink }) => {
   }, [hovered]);
 
   if (isMobile) {
-    return <Svg onClick={onClick} scale={0.0015} position={[0.1, 0.25, 0]} src={link.icon} />;
+    return (
+      <group onClick={onClick} onPointerOver={onPointerOver} onPointerOut={onPointerOut}>
+        {/* 실제 보이는 아이콘 (터치 이벤트는 그룹 모델로 넘김) */}
+        <Svg scale={0.0015} position={[0.1, 0.25, 0]} src={link.icon} />
+        {/* 투명한 히트박스 (터치 영역을 넓게 확보) */}
+        <mesh position={[0.4, 0.4, 0]}>
+          <planeGeometry args={[1.5, 1.5]} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </mesh>
+      </group>
+    );
   }
 
   return (

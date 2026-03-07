@@ -1,4 +1,4 @@
-import { GoogleAnalytics } from "@next/third-parties/google";
+// import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import localFont from 'next/font/local';
 import "./globals.css";
@@ -19,6 +19,7 @@ const cafe24Font = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://gikri.shop"),
   title: "Gikri Web",
   description: "frontend asome website .",
   keywords: "Gikri, Frontend Engineer, React Developer, Three.js",
@@ -43,18 +44,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Gikri Web - Frontend Engineer",
     description: "웹의 생동감을 코드로 빚어내는 프론트엔드 개발자입니다.",
-    url: "https://gikri.show", // 나중에 실제 도메인으로 변경
+    url: "https://gikri.shop", // 나중에 실제 도메인으로 변경
     siteName: "Gikri's Portfolio",
     locale: "ko_KR",
     type: "website",
-    images: [
-      {
-        url: 'https://gikri.show/og-image.png', // 권장 사이즈: 1200x630px
-        width: 1200,
-        height: 630,
-        alt: "Gikri's Portfolio Preview Image",
-      },
-    ],
   },
   /* verification: {
     google: "구글 검색엔진 고유 인증 코드",
